@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@theme {
+  --color-jagged-ice-50: #f4f9f8;
+  --color-jagged-ice-100: #d9eee8;
+  --color-jagged-ice-200: #b7ded5;
+  --color-jagged-ice-300: #85c3b7;
+  --color-jagged-ice-400: #5ba699;
+  --color-jagged-ice-500: #428a7f;
+  --color-jagged-ice-600: #336e67;
+  --color-jagged-ice-700: #2c5954;
+  --color-jagged-ice-800: #264945;
+  --color-jagged-ice-900: #233e3b;
+  --color-jagged-ice-950: #102322;
+}
