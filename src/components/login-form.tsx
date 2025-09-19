@@ -1,6 +1,6 @@
 "use client"
 
-import { Network, TrendingUp, Users, Eye, EyeOff, Building2, Briefcase, MessageCircle } from "lucide-react"
+import { Network, TrendingUp, Users, Eye, EyeOff, Building2, Briefcase, MessageCircle, AlertCircle } from "lucide-react"
 import { useState } from "react"
 
 import { cn } from "@/lib/utils"
@@ -8,18 +8,50 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
-import { ShimmerButton } from "@/components/ui/shimmer-button"
-import { TypingAnimation } from "@/components/ui/typing-animation"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false)
+  const [showError, setShowError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+    const formData = new FormData(form)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    if (!email || !password) {
+      if (!email && !password) {
+        setErrorMessage("Please enter your email and password")
+      } else if (!email) {
+        setErrorMessage("Please enter your email")
+      } else {
+        setErrorMessage("Please enter your password")
+      }
+      setShowError(true)
+      setTimeout(() => setShowError(false), 3000)
+      return
+    }
+
+    // Proceed with login logic here
+    console.log("Login attempt:", { email, password })
+  }
 
   return (
     <div className={cn("flex flex-col gap-8 lg:gap-10", className)} {...props}>
-      <form className="space-y-8 lg:space-y-10">
+      {/* Error Flash Message */}
+      {showError && (
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300">
+          <AlertCircle className="size-4" />
+          <span className="text-sm font-medium">{errorMessage}</span>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-8 lg:space-y-10">
         <div className="flex justify-end">
           <AnimatedThemeToggler className="hover:cursor-pointer" />
         </div>
@@ -40,16 +72,7 @@ export function LoginForm({
                   Venli
                 </h1>
                 <div className="lg:space-y-2">
-                  <div className="min-h-[1.75rem] lg:min-h-[2.5rem] flex items-start">
-                    <TypingAnimation
-                      className="text-lg lg:text-3xl font-bold text-foreground leading-tight"
-                      duration={80}
-                      delay={200}
-                      startOnView={true}
-                    >
-                      Welcome back
-                    </TypingAnimation>
-                  </div>
+                  <p className="text-lg lg:text-3xl font-bold text-foreground">Welcome back</p>
                   <p className="hidden lg:block text-lg text-muted-foreground font-medium">
                     Ready to connect?
                   </p>
@@ -59,7 +82,7 @@ export function LoginForm({
                 </p>
                 <div className="hidden lg:block space-y-3 pt-2">
                   <p className="text-base text-muted-foreground">
-                    Sign in to continue to your account
+                    Login to continue to your account
                   </p>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
@@ -99,26 +122,26 @@ export function LoginForm({
                 <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
                 <Input
                   id="email"
-                  type="email"
+                  name="email"
+                  type="text"
                   placeholder="your@email.com"
                   className="h-12 px-4 bg-background border-2 focus:border-jagged-ice-400 transition-all duration-300 hover:border-jagged-ice-200 focus:shadow-lg focus:shadow-jagged-ice-400/20"
-                  required
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                  <a href="/forgot-password" className="text-xs text-jagged-ice-600 hover:text-jagged-ice-700 transition-colors">
+                  <a href="/forgot-password" className="text-xs text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
                     Forgot password?
                   </a>
                 </div>
                 <div className="relative">
                   <Input
                     id="password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="h-12 px-4 pr-12 bg-background border-2 focus:border-jagged-ice-400 transition-all duration-300 hover:border-jagged-ice-200 focus:shadow-lg focus:shadow-jagged-ice-400/20"
-                    required
                   />
                   <button
                     type="button"
@@ -131,15 +154,13 @@ export function LoginForm({
               </div>
             </div>
 
-            <ShimmerButton
+            <Button
               type="submit"
-              className="w-full h-12 font-medium"
-              background="linear-gradient(to right, #5ba699, #428a7f)"
-              shimmerColor="#ffffff40"
-              shimmerDuration="2s"
+              size="lg"
+              className="w-full h-12 bg-gradient-to-r from-jagged-ice-400 to-jagged-ice-600 hover:from-jagged-ice-500 hover:to-jagged-ice-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              Sign in to Venli
-            </ShimmerButton>
+              Login
+            </Button>
           </div>
 
           <div className="relative">
@@ -153,7 +174,7 @@ export function LoginForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3">
+          <div className="space-y-4">
             <Button
               variant="outline"
               type="button"
@@ -168,34 +189,30 @@ export function LoginForm({
               </svg>
               Continue with Google
             </Button>
-          </div>
 
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground">
-              New to Venli?{" "}
-              <a href="/signup" className="font-medium text-jagged-ice-600 hover:text-jagged-ice-700 transition-colors">
-                Create an account
-              </a>
-            </p>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                New to Venli?{" "}
+                <a href="/signup" className="font-medium text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
+                  Create an account
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </form>
 
-      <div className="text-center text-xs text-muted-foreground space-y-2">
+      <div className="text-center text-xs text-muted-foreground pt-2">
         <p>
           By signing in, you agree to our{" "}
-          <a href="/terms" className="text-jagged-ice-600 hover:text-jagged-ice-700 transition-colors underline underline-offset-2">
+          <a href="/terms" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
             Terms of Service
           </a>{" "}
           and{" "}
-          <a href="/privacy" className="text-jagged-ice-600 hover:text-jagged-ice-700 transition-colors underline underline-offset-2">
+          <a href="/privacy" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
             Privacy Policy
           </a>
         </p>
-        <div className="flex items-center justify-center gap-1 pt-2">
-          <div className="size-2 rounded-full bg-green-500"></div>
-          <span className="text-green-600 dark:text-green-400">All systems operational</span>
-        </div>
       </div>
     </div>
   )

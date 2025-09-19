@@ -1,7 +1,6 @@
 import { LoginForm } from "@/components/login-form"
 import { Network, Users, Briefcase, MessageCircle, Star, Zap } from "lucide-react"
 import { EnhancedPointer } from "@/components/ui/enhanced-pointer"
-import { TypingAnimation } from "@/components/ui/typing-animation"
 
 export default function LoginPage() {
   return (
@@ -22,15 +21,9 @@ export default function LoginPage() {
                 </h1>
               </div>
               <div className="space-y-4">
-                <div className="min-h-[2.5rem] lg:min-h-[3rem] flex items-start">
-                  <TypingAnimation
-                    className="text-3xl lg:text-4xl font-bold text-foreground leading-tight"
-                    duration={100}
-                    delay={500}
-                  >
-                    The social network for startup professionals
-                  </TypingAnimation>
-                </div>
+                <h2 className="text-3xl lg:text-4xl font-bold text-foreground leading-tight">
+                  The social network for startup professionals
+                </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
                   Connect with VCs, founders, and top talent. Share insights, discover opportunities,
                   and build your startup community.
@@ -39,7 +32,7 @@ export default function LoginPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-6">
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/40 border border-border/30">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 border border-border/50 shadow-sm">
                 <div className="flex size-10 items-center justify-center rounded-lg bg-jagged-ice-100 dark:bg-jagged-ice-900">
                   <Users className="size-5 text-jagged-ice-600" />
                 </div>
@@ -49,7 +42,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/40 border border-border/30">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 border border-border/50 shadow-sm">
                 <div className="flex size-10 items-center justify-center rounded-lg bg-jagged-ice-100 dark:bg-jagged-ice-900">
                   <Briefcase className="size-5 text-jagged-ice-600" />
                 </div>
@@ -59,7 +52,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/40 border border-border/30">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 border border-border/50 shadow-sm">
                 <div className="flex size-10 items-center justify-center rounded-lg bg-jagged-ice-100 dark:bg-jagged-ice-900">
                   <MessageCircle className="size-5 text-jagged-ice-600" />
                 </div>
