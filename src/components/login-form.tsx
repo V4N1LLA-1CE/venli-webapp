@@ -13,7 +13,7 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form >
-        <div className="flex justify-end">
+        <div className="flex justify-end ">
           <AnimatedThemeToggler className="hover:cursor-pointer" />
         </div>
         <div className="flex flex-col gap-6">
@@ -52,7 +52,7 @@ export function LoginForm({
                 required
               />
             </div>
-            <Button type="submit" className="w-full hover:cursor-pointer">
+            <Button type="submit" className="w-full hover:cursor-pointer bg-jagged-ice-400 dark:bg-jagged-ice-200">
               Login
             </Button>
           </div>
