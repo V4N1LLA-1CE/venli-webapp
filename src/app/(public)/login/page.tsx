@@ -1,9 +1,9 @@
 import { LoginForm } from "@/components/login-form"
-import { Network, Users, Briefcase, MessageCircle, Star, Zap } from "lucide-react"
+import { Network, Users, Briefcase, MessageCircle, Star } from "lucide-react"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-svh bg-background relative">
+    <div className="min-h-svh h-screen bg-background relative">
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
 

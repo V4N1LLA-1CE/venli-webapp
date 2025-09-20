@@ -218,6 +218,10 @@ export function LoginForm({
               type="button"
               size="lg"
               className="w-full h-12 border-2 hover:bg-accent/50 hover:border-jagged-ice-300 hover:shadow-md transition-all duration-300 group"
+              onClick={() => {
+                const backendUrl = process.env.NEXT_PUBLIC_BACKEND_CORE_BASE_URL || 'http://localhost:4000'
+                window.location.href = `${backendUrl}/api/auth/google`
+              }}
             >
               {/* <svg className="size-5 mr-3 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24"> */}
               {/*   <path */}
