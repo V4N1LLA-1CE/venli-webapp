@@ -29,9 +29,9 @@ export default function OAuthCallback() {
       // Clear the token from URL for security
       window.history.replaceState({}, document.title, '/oauth/callback')
 
-      // Redirect to dashboard or home page after a short delay
+      // Redirect to home page after a short delay
       setTimeout(() => {
-        router.push('/dashboard') // Change this to your desired redirect path
+        router.push('/home')
       }, 2000)
 
     } catch (error) {
