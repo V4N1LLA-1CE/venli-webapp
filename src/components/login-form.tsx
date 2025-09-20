@@ -1,6 +1,6 @@
 "use client"
 
-import { Network, TrendingUp, Users, Eye, EyeOff, Building2, Briefcase, MessageCircle, AlertCircle } from "lucide-react"
+import { Network, TrendingUp, Users, Eye, EyeOff, Briefcase, MessageCircle } from "lucide-react"
 import { useState } from "react"
 
 import { cn } from "@/lib/utils"
@@ -14,42 +14,59 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false)
-  const [showError, setShowError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [emailError, setEmailError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  const passwordRegex = /^.{8,}$/
+
+  const validateEmail = (value: string) => {
+    if (!value) {
+      setEmailError("Email is required")
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Please enter a valid email address")
+    } else {
+      setEmailError("")
+    }
+  }
+
+  const validatePassword = (value: string) => {
+    if (!value) {
+      setPasswordError("Password is required")
+    } else if (!passwordRegex.test(value)) {
+      setPasswordError("Password must be at least 8 characters")
+    } else {
+      setPasswordError("")
+    }
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setEmail(value)
+    validateEmail(value)
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setPassword(value)
+    validatePassword(value)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
 
-    if (!email || !password) {
-      if (!email && !password) {
-        setErrorMessage("Please enter your email and password")
-      } else if (!email) {
-        setErrorMessage("Please enter your email")
-      } else {
-        setErrorMessage("Please enter your password")
-      }
-      setShowError(true)
-      setTimeout(() => setShowError(false), 3000)
-      return
+    validateEmail(email)
+    validatePassword(password)
+
+    if (!emailError && !passwordError && email && password) {
+      console.log("Login attempt:", { email, password })
     }
-
-    // Proceed with login logic here
-    console.log("Login attempt:", { email, password })
   }
 
   return (
     <div className={cn("flex flex-col gap-8 lg:gap-10", className)} {...props}>
-      {/* Error Flash Message */}
-      {showError && (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300">
-          <AlertCircle className="size-4" />
-          <span className="text-sm font-medium">{errorMessage}</span>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-8 lg:space-y-10">
         <div className="flex justify-end">
@@ -125,8 +142,18 @@ export function LoginForm({
                   name="email"
                   type="text"
                   placeholder="your@email.com"
-                  className="h-12 px-4 bg-background border-2 focus:border-jagged-ice-400 transition-all duration-300 hover:border-jagged-ice-200 focus:shadow-lg focus:shadow-jagged-ice-400/20"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className={cn(
+                    "h-12 px-4 bg-background border-2 transition-all duration-300 focus:shadow-lg focus:shadow-jagged-ice-400/20",
+                    emailError
+                      ? "border-red-400 focus:border-red-400 hover:border-red-300"
+                      : "focus:border-jagged-ice-400 hover:border-jagged-ice-200"
+                  )}
                 />
+                {emailError && (
+                  <p className="text-sm text-red-500 mt-1">{emailError}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -141,7 +168,14 @@ export function LoginForm({
                     name="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-12 px-4 pr-12 bg-background border-2 focus:border-jagged-ice-400 transition-all duration-300 hover:border-jagged-ice-200 focus:shadow-lg focus:shadow-jagged-ice-400/20"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    className={cn(
+                      "h-12 px-4 pr-12 bg-background border-2 transition-all duration-300 focus:shadow-lg focus:shadow-jagged-ice-400/20",
+                      passwordError
+                        ? "border-red-400 focus:border-red-400 hover:border-red-300"
+                        : "focus:border-jagged-ice-400 hover:border-jagged-ice-200"
+                    )}
                   />
                   <button
                     type="button"
@@ -151,9 +185,11 @@ export function LoginForm({
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
                 </div>
+                {passwordError && (
+                  <p className="text-sm text-red-500 mt-1">{passwordError}</p>
+                )}
               </div>
             </div>
-
             <Button
               type="submit"
               size="lg"

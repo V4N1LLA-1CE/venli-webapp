@@ -95,7 +95,7 @@ export function Pointer({
     const baseProps = {
       stroke: "currentColor",
       fill: "currentColor",
-      strokeWidth: "1.2",
+      strokeWidth: "1",
       viewBox: "0 0 16 16",
       height: "24",
       width: "24",
@@ -105,36 +105,36 @@ export function Pointer({
     const path = "M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z";
 
     switch (pointerState) {
-      case "pointer":
-        return (
-          <svg
-            {...baseProps}
-            className={cn(
-              "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-havelock-blue-900",
-              className,
-            )}
-          >
-            <path d={path} />
-          </svg>
-        );
-      case "input":
-        return (
-          <svg
-            {...baseProps}
-            className={cn(
-              "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-havelock-blue-900",
-              className,
-            )}
-          >
-            <path d={path} />
-          </svg>
-        );
+      // case "pointer":
+      //   return (
+      //     <svg
+      //       {...baseProps}
+      //       className={cn(
+      //         "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-havelock-blue-900",
+      //         className,
+      //       )}
+      //     >
+      //       <path d={path} />
+      //     </svg>
+      //   );
+      // case "input":
+      //   return (
+      //     <svg
+      //       {...baseProps}
+      //       className={cn(
+      //         "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-havelock-blue-900",
+      //         className,
+      //       )}
+      //     >
+      //       <path d={path} />
+      //     </svg>
+      //   );
       default:
         return (
           <svg
             {...baseProps}
             className={cn(
-              "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-havelock-blue-900",
+              "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-black",
               className,
             )}
           >
