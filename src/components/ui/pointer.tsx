@@ -9,7 +9,7 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-interface PointerProps extends Omit<HTMLMotionProps<"div">, "ref"> {}
+interface PointerProps extends Omit<HTMLMotionProps<"div">, "ref"> { }
 
 /**
  * A custom pointer component that displays an animated cursor.
@@ -99,13 +99,13 @@ export function Pointer({
               <svg
                 stroke="currentColor"
                 fill="currentColor"
-                strokeWidth="1"
+                strokeWidth="1.2"
                 viewBox="0 0 16 16"
                 height="24"
                 width="24"
                 xmlns="http://www.w3.org/2000/svg"
                 className={cn(
-                  "rotate-[-85deg] stroke-white text-black",
+                  "rotate-[-85deg] dark:stroke-white text-jagged-ice-400 stroke-jagged-ice-600",
                   className,
                 )}
               >

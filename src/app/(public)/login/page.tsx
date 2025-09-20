@@ -1,11 +1,9 @@
 import { LoginForm } from "@/components/login-form"
 import { Network, Users, Briefcase, MessageCircle, Star, Zap } from "lucide-react"
-import { EnhancedPointer } from "@/components/ui/enhanced-pointer"
 
 export default function LoginPage() {
   return (
     <div className="min-h-svh bg-gradient-to-br from-background via-background to-jagged-ice-50/20 dark:to-jagged-ice-950/20 relative">
-      <EnhancedPointer className="hidden lg:block" />
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
 
