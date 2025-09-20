@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
+import Image from "next/image"
+import Link from "next/link"
 
 export function LoginForm({
   className,
@@ -77,7 +79,7 @@ export function LoginForm({
           <div className="flex flex-col items-center gap-6 lg:items-start lg:text-left">
             <div className="flex flex-col items-center gap-4 lg:items-start lg:w-full">
               <div className="relative lg:hidden">
-                <div className="flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-jagged-ice-400 to-jagged-ice-600 shadow-lg">
+                <div className="flex size-16 items-center justify-center rounded-2xl bg-jagged-ice-500 shadow-lg">
                   <Network className="size-8 text-white" />
                 </div>
                 <div className="absolute -bottom-1 -right-1 flex size-6 items-center justify-center rounded-full bg-jagged-ice-500 shadow-md">
@@ -85,7 +87,7 @@ export function LoginForm({
                 </div>
               </div>
               <div className="text-center space-y-2 lg:text-left lg:space-y-4">
-                <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-jagged-ice-600 to-jagged-ice-800 bg-clip-text text-transparent lg:hidden">
+                <h1 className="text-3xl lg:text-4xl font-bold text-jagged-ice-700 dark:text-jagged-ice-300 lg:hidden">
                   Venli
                 </h1>
                 <div className="lg:space-y-2">
@@ -158,9 +160,9 @@ export function LoginForm({
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                  <a href="/forgot-password" className="text-xs text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
+                  <Link href="/forgot-password" className="text-xs text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <div className="relative">
                   <Input
@@ -193,7 +195,7 @@ export function LoginForm({
             <Button
               type="submit"
               size="lg"
-              className="w-full h-12 bg-gradient-to-r from-jagged-ice-400 to-jagged-ice-600 hover:from-jagged-ice-500 hover:to-jagged-ice-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full h-12 bg-jagged-ice-500 hover:bg-jagged-ice-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
             >
               Login
             </Button>
@@ -217,21 +219,22 @@ export function LoginForm({
               size="lg"
               className="w-full h-12 border-2 hover:bg-accent/50 hover:border-jagged-ice-300 hover:shadow-md transition-all duration-300 group"
             >
-              <svg className="size-5 mr-3 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24">
-                <path
-                  d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                  fill="currentColor"
-                />
-              </svg>
+              {/* <svg className="size-5 mr-3 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24"> */}
+              {/*   <path */}
+              {/*     d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" */}
+              {/*     fill="currentColor" */}
+              {/*   /> */}
+              {/* </svg> */}
+              <Image src={"/icons/google.png"} alt="google icon" width={20} height={20} />
               Continue with Google
             </Button>
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
                 New to Venli?{" "}
-                <a href="/signup" className="font-medium text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
+                <Link href="/signup" className="font-medium text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors">
                   Create an account
-                </a>
+                </Link>
               </p>
             </div>
           </div>
@@ -241,13 +244,13 @@ export function LoginForm({
       <div className="text-center text-xs text-muted-foreground pt-2">
         <p>
           By signing in, you agree to our{" "}
-          <a href="/terms" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
+          <Link href="/terms" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
             Terms of Service
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a href="/privacy" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
+          <Link href="/privacy" className="text-jagged-ice-600 hover:text-jagged-ice-400 dark:text-jagged-ice-400 dark:hover:text-jagged-ice-200 transition-colors underline underline-offset-2">
             Privacy Policy
-          </a>
+          </Link>
         </p>
       </div>
     </div>

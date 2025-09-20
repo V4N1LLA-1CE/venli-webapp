@@ -3,7 +3,7 @@ import { Network, Users, Briefcase, MessageCircle, Star, Zap } from "lucide-reac
 
 export default function LoginPage() {
   return (
-    <div className="min-h-svh bg-gradient-to-br from-background via-background to-jagged-ice-50/20 dark:to-jagged-ice-950/20 relative">
+    <div className="min-h-svh bg-background relative">
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
 
@@ -11,10 +11,10 @@ export default function LoginPage() {
           <div className="hidden lg:block space-y-8">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-jagged-ice-400 to-jagged-ice-600">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-jagged-ice-500">
                   <Network className="size-6 text-white" />
                 </div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-jagged-ice-600 to-jagged-ice-800 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-jagged-ice-700 dark:text-jagged-ice-300">
                   Venli
                 </h1>
               </div>
