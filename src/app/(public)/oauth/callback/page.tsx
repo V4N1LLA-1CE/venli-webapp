@@ -20,16 +20,16 @@ export default function OAuthCallback() {
     }
 
     try {
-      // Store the access token using TokenManager
+      // store the access token using TokenManager
       TokenManager.setAccessToken(token)
 
       setStatus('success')
       setMessage('Authentication successful! Redirecting...')
 
-      // Clear the token from URL for security
+      // clear the token from URL for security
       window.history.replaceState({}, document.title, '/oauth/callback')
 
-      // Redirect to home page after a short delay
+      // redirect to home page after a short delay
       setTimeout(() => {
         router.push('/home')
       }, 2000)
