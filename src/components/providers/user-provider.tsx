@@ -1,0 +1,38 @@
+"use client"
+
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/lib/redux-store'
+import { loadUserProfile } from '@/lib/profile-slice'
+import { TokenManager } from '@/lib/token-manager'
+
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch()
+  const { user, loading, error } = useSelector((state: RootState) => state.profile)
+
+  useEffect(() => {
+    // check if user has token but no user data loaded AND no error
+    if (TokenManager.hasAccessToken() && !user && !loading && !error) {
+      dispatch(loadUserProfile() as any)
+    }
+  }, [dispatch, user, loading, error])
+
+  // show loading while fetching user
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  // if error (user not found), redirect to login
+  if (error) {
+    TokenManager.removeAccessToken()
+    window.location.href = '/login'
+    return null
+  }
+
+  // show nothing if no user (will redirect via API client)
+  if (!user && !loading) {
+    return null
+  }
+
+  return <>{children}</>
+}

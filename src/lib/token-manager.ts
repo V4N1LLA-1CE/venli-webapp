@@ -32,18 +32,10 @@ export class TokenManager {
   }
 
   /**
-   * Get Authorization header for API requests
-   */
-  static getAuthHeader(): { Authorization: string } | {} {
-    const token = this.getAccessToken()
-    return token ? { Authorization: `Bearer ${token}` } : {}
-  }
-
-  /**
-   * Clear all authentication data (for logout)
-   * - removes refreshtoken cookie from backend
-   * - clears access token from localStorage
-   */
+ * Clear all authentication data (for logout)
+ * - removes refreshtoken cookie from backend
+ * - clears access token from localStorage
+ */
   static async clearAuth(): Promise<void> {
     try {
       const url = process.env.NEXT_PUBLIC_BACKEND_CORE_BASE_URL
