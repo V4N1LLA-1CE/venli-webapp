@@ -2,12 +2,14 @@
 
 import { Network, TrendingUp, Users, Eye, EyeOff, Briefcase, MessageCircle } from "lucide-react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
+import { AuthService } from "@/lib/auth-service"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -15,11 +17,14 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [loginError, setLoginError] = useState("")
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   const passwordRegex = /^.{8,}$/
@@ -56,14 +61,32 @@ export function LoginForm({
     validatePassword(value)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleEmailPasswordLogin = async () => {
+    setIsLoading(true)
+    setLoginError("")
+
+    try {
+      await AuthService.emailPasswordLogin({ email, password })
+      router.push('/home')
+    } catch (error: any) {
+      if (error.message) {
+        setLoginError(error.message)
+      } else {
+        setLoginError("Network error. Please check your connection.")
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     validateEmail(email)
     validatePassword(password)
 
     if (!emailError && !passwordError && email && password) {
-      console.log("Login attempt:", { email, password })
+      await handleEmailPasswordLogin()
     }
   }
 
@@ -136,6 +159,11 @@ export function LoginForm({
           </div>
 
           <div className="flex flex-col gap-6">
+            {loginError && (
+              <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:text-red-400 dark:border-red-800">
+                {loginError}
+              </div>
+            )}
             <div className="grid gap-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
@@ -195,9 +223,10 @@ export function LoginForm({
             <Button
               type="submit"
               size="lg"
-              className="w-full h-12 bg-jagged-ice-500 hover:bg-jagged-ice-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+              disabled={isLoading}
+              className="w-full h-12 bg-jagged-ice-500 hover:bg-jagged-ice-600 disabled:bg-jagged-ice-300 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>
 
