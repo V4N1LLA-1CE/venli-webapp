@@ -63,9 +63,17 @@ export const AnimatedThemeToggler = ({ className }: props) => {
     );
   };
   return (
-    <button ref={buttonRef} type="button" onClick={changeTheme} className={cn(className, "relative")}>
+    <button
+      ref={buttonRef}
+      type="button"
+      onClick={changeTheme}
+      className={cn(
+        className,
+        "relative hover:cursor-pointer rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
+      )}
+    >
       <SunDim className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-      <Moon className="absolute inset-0 h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+      <Moon className="absolute top-2 left-2 h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
     </button>
   );
 };
