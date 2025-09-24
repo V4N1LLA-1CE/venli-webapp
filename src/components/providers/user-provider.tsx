@@ -11,8 +11,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const { user, loading, error } = useSelector((state: RootState) => state.profile)
 
   useEffect(() => {
-    // check if user has token but no user data loaded AND no error
-    if (TokenManager.hasAccessToken() && !user && !loading && !error) {
+    // Always try to load user profile if not already loaded/loading
+    // This ensures API client handles auth properly (redirects on 401)
+    if (!user && !loading && !error) {
       dispatch(loadUserProfile() as any)
     }
   }, [dispatch, user, loading, error])
