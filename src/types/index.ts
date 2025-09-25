@@ -6,6 +6,10 @@ export interface User {
   bio: string | null
   location: string | null
   scopes: string[]
+
+  // new fields to add
+  accountType: string | null
+  profileImage: string | null
 }
 
 export interface AuthResponse {
