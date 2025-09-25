@@ -138,7 +138,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const userData = user ? {
     name: user.name || user.email.split('@')[0],
     email: user.email,
-    avatar: "/avatars/default.jpg",
+    avatar: user.profileImage || "/avatars/default.jpg",
   } : data.user
 
   return (
