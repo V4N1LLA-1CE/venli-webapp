@@ -1,0 +1,169 @@
+"use client"
+
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { User } from "@/types"
+import { Check, X, Loader2 } from "lucide-react"
+
+interface ProfileEditFormProps {
+  user: User
+  onSave: (updatedData: Partial<User>) => Promise<void>
+  onCancel: () => void
+}
+
+export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps) {
+  const [formData, setFormData] = useState({
+    name: user.name || '',
+    headline: user.headline || '',
+    bio: user.bio || '',
+    location: user.location || ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const initialData = {
+    name: user.name || '',
+    headline: user.headline || '',
+    bio: user.bio || '',
+    location: user.location || ''
+  }
+
+  const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData)
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      await onSave(formData)
+    } catch (error) {
+      console.error('Failed to save profile:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+
+  return (
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+
+        {/* Personal Information Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+            Personal Information
+          </h3>
+
+          <div className="grid grid-cols-1 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                placeholder="Enter your full name"
+                className="rounded-lg"
+                maxLength={50}
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.name.length}/50 characters
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="headline" className="text-sm font-medium">Professional Headline</Label>
+              <Input
+                id="headline"
+                value={formData.headline}
+                onChange={(e) => handleInputChange('headline', e.target.value)}
+                placeholder="e.g. Senior Product Manager at Tech Co"
+                className="rounded-lg"
+                maxLength={100}
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.headline.length}/100 characters
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="location" className="text-sm font-medium">Location</Label>
+              <Input
+                id="location"
+                value={formData.location}
+                onChange={(e) => handleInputChange('location', e.target.value)}
+                placeholder="e.g. San Francisco, CA"
+                className="rounded-lg"
+                maxLength={50}
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.location.length}/50 characters
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Bio Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+            About
+          </h3>
+
+          <div className="space-y-2">
+            <Label htmlFor="bio" className="text-sm font-medium">Bio</Label>
+            <Textarea
+              id="bio"
+              value={formData.bio}
+              onChange={(e) => handleInputChange('bio', e.target.value)}
+              placeholder="Tell us about yourself, your experience, and what you're looking for..."
+              className="rounded-lg resize-none min-h-[120px]"
+              maxLength={255}
+            />
+            <div className="text-xs text-muted-foreground text-right">
+              {formData.bio.length}/255 characters
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3">
+          <Button
+            type="submit"
+            disabled={isSubmitting || !hasChanges}
+            className="flex-1 bg-jagged-ice-600 hover:bg-jagged-ice-700 text-white hover:cursor-pointer rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Check className="h-4 w-4 mr-2" />
+                Save Changes
+              </>
+            )}
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="rounded-full hover:cursor-pointer"
+          >
+            <X className="h-4 w-4 mr-2" />
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
+}

@@ -1,7 +1,10 @@
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Card, CardContent } from "./ui/card"
+import { Button } from "./ui/button"
 import { User } from "@/types"
-import { MapPin } from "lucide-react"
+import { MapPin, UserPen, X } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -9,6 +12,9 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip"
 import AccountBadge from "./account-badge"
+import { ProfileEditForm } from "./profile-edit-form"
+import { updateUserProfile } from "@/lib/profile-slice"
+import { RootState } from "@/lib/redux-store"
 
 const getInitials = (name: string) => {
   return name
@@ -20,9 +26,54 @@ const getInitials = (name: string) => {
 }
 
 const ProfileCard = ({ user }: { user: User }) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state: RootState) => state.profile)
+
+  const handleSave = async (updatedData: Partial<User>) => {
+    try {
+      await dispatch(updateUserProfile(updatedData) as any)
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Failed to update profile:', error)
+    }
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+  }
+
   return (
     <div className="max-w-lg">
-      <Card className="overflow-hidden rounded-[2rem]">
+      <Card className="overflow-hidden rounded-[2rem] relative">
+        {/* Edit Button - Slides down when editing */}
+        <Button
+          variant="outline"
+          onClick={() => setIsEditing(true)}
+          className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${
+            isEditing
+              ? 'top-14 bg-muted border-muted-foreground/20 text-muted-foreground cursor-not-allowed'
+              : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
+            }`}
+          disabled={loading || isEditing}
+        >
+          <UserPen className="h-4 w-4" />
+        </Button>
+
+        {/* Cancel Button - Slides right to take edit button's place */}
+        <Button
+          variant="outline"
+          onClick={handleCancel}
+          className={`absolute top-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out bg-card dark:hover:bg-red-400/80 dark:bg-red-300/70 border-2 border-red-200 text-red-700 shadow-md hover:bg-red-50 hover:text-red-700 hover:border-red-300 ${
+            isEditing
+              ? 'right-4 opacity-100 pointer-events-auto'
+              : 'right-16 opacity-0 pointer-events-none'
+            }`}
+          disabled={loading}
+        >
+          <X className="h-4 w-4" />
+        </Button>
+
         {/* Banner Section */}
         <div className="relative h-42 bg-jagged-ice-500 rounded-[1.7rem] m-1.5">
 
@@ -36,57 +87,73 @@ const ProfileCard = ({ user }: { user: User }) => {
         </div>
 
         <CardContent className="p-8 pt-0">
-          <div className="space-y-6">
-
-            {/* Header with Name and Account Type */}
-            <div className="flex items-start justify-between">
-              <div >
-                <h2 className="text-3xl font-bold wrap-anywhere">{user.name || user.email.split('@')[0].toLowerCase()}</h2>
-                <p className="text-muted-foreground text-md">{user.headline}</p>
-              </div>
-
-              {/* Account Type Badge - More prominent */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <AccountBadge accountType={user.account_type}>
-                      {user.account_type?.toUpperCase() || "Not Set"}
-                    </AccountBadge>
-                  </TooltipTrigger>
-                  <TooltipContent className="w-[12rem] text-center">
-                    <p className="wrap-normal">
-                      {user.account_type
-                        ? "Account type helps personalise your experience"
-                        : "We recommend setting your account type to optimise user experience as our algorithm takes into account the type of user you are"
-                      }
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+          <div className="relative overflow-hidden">
+            {/* Edit Form - slides in from right */}
+            <div className={`transition-all duration-500 ease-in-out ${isEditing
+              ? 'translate-x-0 opacity-100'
+              : 'translate-x-full opacity-0 absolute inset-0 pointer-events-none'
+              }`}>
+              <ProfileEditForm
+                user={user}
+                onSave={handleSave}
+                onCancel={handleCancel}
+              />
             </div>
 
-            {/* Professional Details Section */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Details</h3>
+            {/* Profile View - slides out to left */}
+            <div className={`transition-all duration-500 ease-in-out ${isEditing
+              ? '-translate-x-full opacity-0 absolute inset-0 pointer-events-none'
+              : 'translate-x-0 opacity-100'
+              }`}>
+              <div className="space-y-6">
 
-              <div className="flex items-center gap-6 text-sm">
-                {/* <div className="flex items-center gap-2"> */}
-                {/*   <Building className="h-4 w-4 text-muted-foreground" /> */}
-                {/*   <span className={`${user.company ? "text-foreground" : "text-muted-foreground"}`} >{user.company || "Not Set"}</span> */}
-                {/* </div> */}
-                <div className="flex items-center gap-2 min-w-0">
-                  <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  <span className={`text-muted-foreground`}>{user.location || "Location Not Set"}</span>
+                {/* Header with Name and Account Type */}
+                <div className="flex items-start justify-between">
+                  <div >
+                    <h2 className="text-3xl font-bold wrap-anywhere">{user.name || user.email.split('@')[0].toLowerCase()}</h2>
+                    <p className="text-muted-foreground text-md">{user.headline}</p>
+                  </div>
+
+                  {/* Account Type Badge - More prominent */}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <AccountBadge accountType={user.account_type}>
+                          {user.account_type?.toUpperCase() || "Not Set"}
+                        </AccountBadge>
+                      </TooltipTrigger>
+                      <TooltipContent className="w-[12rem] text-center">
+                        <p className="wrap-normal">
+                          {user.account_type
+                            ? "Account type helps personalise your experience"
+                            : "We recommend setting your account type to optimise user experience as our algorithm takes into account the type of user you are"
+                          }
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+
+                {/* Professional Details Section */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Details</h3>
+
+                  <div className="flex items-center gap-6 text-sm">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className={`text-muted-foreground`}>{user.location || "Location Not Set"}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* About Section */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Bio</h3>
+                  <p className={`text-sm text-muted-foreground leading-relaxed `}>
+                    {user.bio || "Bio is not set."}
+                  </p>
                 </div>
               </div>
-            </div>
-
-            {/* About Section */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Bio</h3>
-              <p className={`text-sm text-muted-foreground leading-relaxed `}>
-                {user.bio || "Bio is not set."}
-              </p>
             </div>
           </div>
         </CardContent>
