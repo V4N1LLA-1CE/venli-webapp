@@ -2,7 +2,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Card, CardContent } from "./ui/card"
 import { User } from "@/types"
 import { MapPin } from "lucide-react"
-import { Badge } from "./ui/badge"
 import {
   Tooltip,
   TooltipContent,
@@ -42,7 +41,7 @@ const ProfileCard = ({ user }: { user: User }) => {
             {/* Header with Name and Account Type */}
             <div className="flex items-start justify-between">
               <div >
-                <h2 className="text-3xl font-bold wrap-anywhere">{user.name || user.email.split('@')[0]}</h2>
+                <h2 className="text-3xl font-bold wrap-anywhere">{user.name || user.email.split('@')[0].toLowerCase()}</h2>
                 <p className="text-muted-foreground text-md">{user.headline}</p>
               </div>
 
@@ -51,7 +50,7 @@ const ProfileCard = ({ user }: { user: User }) => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <AccountBadge accountType={user.account_type}>
-                      {user.account_type || "Not Set"}
+                      {user.account_type?.toUpperCase() || "Not Set"}
                     </AccountBadge>
                   </TooltipTrigger>
                   <TooltipContent className="w-[12rem] text-center">
