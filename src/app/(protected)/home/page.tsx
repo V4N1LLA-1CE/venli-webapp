@@ -3,8 +3,8 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/redux-store'
 import { useSetPageTitle } from '@/contexts/page-context'
-import ProfileCard from '@/components/profile-card'
-import { ProfileCardSkeleton } from '@/components/profile-card-skeleton'
+import ProfileCard from '@/components/profile/profile-card'
+import { ProfileCardSkeleton } from '@/components/profile/profile-card-skeleton'
 
 const HomePage = () => {
   const { user, loading, error } = useSelector((state: RootState) => state.profile)

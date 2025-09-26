@@ -1,6 +1,6 @@
 "use client"
 
-import { LoginForm } from "@/components/login-form"
+import { LoginForm } from "@/components/auth/login-form"
 import { TokenManager } from "@/lib/token-manager"
 import { Network, Users, Briefcase, MessageCircle, Star } from "lucide-react"
 import { useRouter } from "next/navigation"

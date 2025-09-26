@@ -5,8 +5,8 @@ import { Provider } from 'react-redux'
 import { store } from '@/lib/redux-store'
 import { UserProvider } from '@/components/providers/user-provider'
 import { PageProvider, usePageTitle } from '@/contexts/page-context'
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
+import { AppSidebar } from "@/components/layout/app-sidebar"
+import { SiteHeader } from "@/components/layout/site-header"
 import {
   SidebarInset,
   SidebarProvider,
