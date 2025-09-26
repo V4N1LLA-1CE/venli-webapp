@@ -37,6 +37,7 @@ const ProfileCard = ({ user }: { user: User }) => {
 
         <CardContent className="p-8 pt-0">
           <div className="space-y-6">
+
             {/* Header with Name and Account Type */}
             <div className="flex items-start justify-between">
               <div >
