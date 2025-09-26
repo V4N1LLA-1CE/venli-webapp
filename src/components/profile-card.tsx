@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Card, CardContent } from "./ui/card"
 import { User } from "@/types"
 import { MapPin } from "lucide-react"
@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip"
+import AccountBadge from "./account-badge"
 
 const getInitials = (name: string) => {
   return name
@@ -28,7 +29,7 @@ const ProfileCard = ({ user }: { user: User }) => {
 
           {/* Avatar positioned half on banner, half below */}
           <Avatar className="absolute bottom-6 left-6 translate-y-1/2 h-24 w-24 border-4 border-background shadow-lg rounded-full">
-            <AvatarImage src={user.profileImage || undefined} alt={user.name || user.email} />
+            <AvatarImage src={user.pfp_url || undefined} alt={user.name || user.email} />
             <AvatarFallback className="text-2xl font-bold bg-jagged-ice-100 text-jagged-ice-700 rounded-full flex items-center justify-center w-full h-full">
               {getInitials(user.name || user.email)}
             </AvatarFallback>
@@ -49,13 +50,13 @@ const ProfileCard = ({ user }: { user: User }) => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Badge className={`${user.accountType ? "bg-jagged-ice-200 text-jagged-ice-800 " : "bg-red-100 text-red-800 "} border-0 px-4 py-2 text-sm font-bold shadow-sm rounded-full cursor-help`}>
-                      {user.accountType || "Not Set"}
-                    </Badge>
+                    <AccountBadge accountType={user.account_type}>
+                      {user.account_type || "Not Set"}
+                    </AccountBadge>
                   </TooltipTrigger>
-                  <TooltipContent >
-                    <p className="max-w-3xs text-center">
-                      {user.accountType
+                  <TooltipContent className="w-[12rem] text-center">
+                    <p className="wrap-normal">
+                      {user.account_type
                         ? "Account type helps personalise your experience"
                         : "We recommend setting your account type to optimise user experience as our algorithm takes into account the type of user you are"
                       }
