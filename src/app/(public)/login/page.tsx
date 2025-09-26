@@ -1,7 +1,20 @@
+"use client"
+
 import { LoginForm } from "@/components/login-form"
+import { TokenManager } from "@/lib/token-manager"
 import { Network, Users, Briefcase, MessageCircle, Star } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 export default function LoginPage() {
+
+  const router = useRouter()
+  useEffect(() => {
+    if (TokenManager.hasAccessToken()) {
+      router.push("/home")
+    }
+  })
+
   return (
     <div className="min-h-svh h-screen bg-background relative">
       <div className="container mx-auto px-4 py-8 lg:py-16">
