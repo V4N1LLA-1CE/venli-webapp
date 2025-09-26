@@ -66,7 +66,7 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
                 variant="outline"
                 onClick={() => setIsEditing(true)}
                 className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${isEditing
-                    ? 'top-14 bg-muted border-muted-foreground/20 text-muted-foreground cursor-not-allowed'
+                    ? 'top-14 bg-muted/80 dark:bg-muted/60 border-2 border-muted-foreground/30 dark:border-muted-foreground/50 text-muted-foreground dark:text-muted-foreground/80 cursor-not-allowed shadow-sm'
                     : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
                   }`}
                 disabled={loading || isEditing}
