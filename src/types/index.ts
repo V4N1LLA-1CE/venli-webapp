@@ -6,8 +6,8 @@ export type User = {
   bio?: string
   location?: string
   scopes: string[]
-  accountType?: string
-  profileImage?: string
+  account_type?: string
+  pfp_url?: string
 }
 
 export interface AuthResponse {
