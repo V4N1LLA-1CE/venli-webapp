@@ -18,10 +18,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, [dispatch, user, loading, error])
 
-  // show loading while fetching user
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  // Don't show any loading state - just let the page render normally
 
   // if error (user not found), redirect to login
   if (error) {

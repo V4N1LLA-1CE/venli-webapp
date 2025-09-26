@@ -25,15 +25,24 @@ const getInitials = (name: string) => {
     .slice(0, 2)
 }
 
-const ProfileCard = ({ user }: { user: User }) => {
+const ProfileCard = ({ user: initialUser }: { user: User }) => {
   const [isEditing, setIsEditing] = useState(false)
   const dispatch = useDispatch()
-  const { loading } = useSelector((state: RootState) => state.profile)
+  const { user: reduxUser, loading } = useSelector((state: RootState) => state.profile)
+
+  // Always prefer initial prop during edit mode to prevent flickering,
+  // otherwise use Redux user for updates
+  const user = isEditing ? initialUser : (reduxUser || initialUser)
 
   const handleSave = async (updatedData: Partial<User>) => {
     try {
+      // Send to server and wait for response
       await dispatch(updateUserProfile(updatedData) as any)
-      setIsEditing(false)
+
+      // Small delay to ensure Redux state has updated before exiting edit mode
+      setTimeout(() => {
+        setIsEditing(false)
+      }, 50)
     } catch (error) {
       console.error('Failed to update profile:', error)
     }
