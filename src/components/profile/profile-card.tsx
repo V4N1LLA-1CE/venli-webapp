@@ -98,7 +98,10 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
 
           {/* Avatar positioned half on banner, half below */}
           <Avatar className="absolute bottom-6 left-6 translate-y-1/2 h-24 w-24 border-4 border-background shadow-lg rounded-full">
-            <AvatarImage src={user.pfp_url || undefined} alt={user.name || user.email} />
+            <AvatarImage
+              src={user.pfp_url || undefined}
+              alt={user.name || user.email}
+            />
             <AvatarFallback className="text-2xl font-bold bg-jagged-ice-100 text-jagged-ice-700 rounded-full flex items-center justify-center w-full h-full">
               {getInitials(user.name || user.email)}
             </AvatarFallback>
