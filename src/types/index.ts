@@ -1,15 +1,13 @@
-export interface User {
+export type User = {
   id: number
   email: string
-  name: string | null
-  headline: string | null
-  bio: string | null
-  location: string | null
+  name?: string
+  headline?: string
+  bio?: string
+  location?: string
   scopes: string[]
-
-  // new fields to add
-  accountType: string | null
-  profileImage: string | null
+  accountType?: string
+  profileImage?: string
 }
 
 export interface AuthResponse {
