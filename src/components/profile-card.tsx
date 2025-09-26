@@ -149,7 +149,7 @@ const ProfileCard = ({ user }: { user: User }) => {
                 {/* About Section */}
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Bio</h3>
-                  <p className={`text-sm text-muted-foreground leading-relaxed `}>
+                  <p className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap`}>
                     {user.bio || "Bio is not set."}
                   </p>
                 </div>
