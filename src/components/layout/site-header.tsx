@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { IconBell, IconSearch } from "@tabler/icons-react"
-import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
+import { AnimatedThemeToggler } from "../ui/animated-theme-toggler"
 
 interface SiteHeaderProps {
   title?: string

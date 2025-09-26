@@ -8,7 +8,6 @@ import {
   IconMessage,
   IconCalendar,
   IconBrandLinkedin,
-  IconNetwork,
   IconTrendingUp,
   IconHelp,
   IconSearch,
@@ -19,10 +18,11 @@ import {
   IconUserPlus,
 } from "@tabler/icons-react"
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/layout/nav-documents"
+import { NavMain } from "@/components/layout/nav-main"
+import { NavSecondary } from "@/components/layout/nav-secondary"
+import { NavUser } from "@/components/layout/nav-user"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Sidebar,
   SidebarContent,
@@ -167,7 +167,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData} onLogout={handleLogout} />
+        {user ? (
+          <NavUser user={userData} onLogout={handleLogout} />
+        ) : (
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <div className="flex-1 space-y-1">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   )

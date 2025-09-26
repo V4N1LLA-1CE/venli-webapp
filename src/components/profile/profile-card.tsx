@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { Card, CardContent } from "./ui/card"
-import { Button } from "./ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Card, CardContent } from "../ui/card"
+import { Button } from "../ui/button"
 import { User } from "@/types"
 import { MapPin, UserPen, X } from "lucide-react"
 import {
@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip"
+} from "../ui/tooltip"
 import AccountBadge from "./account-badge"
 import { ProfileEditForm } from "./profile-edit-form"
 import { updateUserProfile } from "@/lib/profile-slice"
@@ -25,15 +25,27 @@ const getInitials = (name: string) => {
     .slice(0, 2)
 }
 
-const ProfileCard = ({ user }: { user: User }) => {
+const ProfileCard = ({ user: initialUser }: { user: User }) => {
   const [isEditing, setIsEditing] = useState(false)
   const dispatch = useDispatch()
-  const { loading } = useSelector((state: RootState) => state.profile)
+  const { user: reduxUser, loading } = useSelector((state: RootState) => state.profile)
+
+  // Always prefer initial prop during edit mode to prevent flickering,
+  // otherwise use Redux user for updates
+  const user = isEditing ? initialUser : (reduxUser || initialUser)
 
   const handleSave = async (updatedData: Partial<User>) => {
     try {
-      await dispatch(updateUserProfile(updatedData) as any)
-      setIsEditing(false)
+      // Start both the API call and minimum delay
+      const [apiResult] = await Promise.all([
+        dispatch(updateUserProfile(updatedData) as any),
+        new Promise(resolve => setTimeout(resolve, 800)) // Minimum 800ms delay
+      ])
+
+      // Small delay to ensure Redux state has updated before exiting edit mode
+      setTimeout(() => {
+        setIsEditing(false)
+      }, 50)
     } catch (error) {
       console.error('Failed to update profile:', error)
     }
@@ -53,9 +65,8 @@ const ProfileCard = ({ user }: { user: User }) => {
               <Button
                 variant="outline"
                 onClick={() => setIsEditing(true)}
-                className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${
-                  isEditing
-                    ? 'top-14 bg-muted border-muted-foreground/20 text-muted-foreground cursor-not-allowed'
+                className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${isEditing
+                    ? 'top-14 bg-muted/80 dark:bg-muted/60 border-2 border-muted-foreground/30 dark:border-muted-foreground/50 text-muted-foreground dark:text-muted-foreground/80 cursor-not-allowed shadow-sm'
                     : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
                   }`}
                 disabled={loading || isEditing}
@@ -73,8 +84,7 @@ const ProfileCard = ({ user }: { user: User }) => {
         <Button
           variant="outline"
           onClick={handleCancel}
-          className={`absolute top-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out bg-card dark:hover:bg-red-400/80 dark:bg-red-300/70 border-2 border-red-200 text-red-700 shadow-md hover:bg-red-50 hover:text-red-700 hover:border-red-300 ${
-            isEditing
+          className={`absolute top-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out bg-card dark:hover:bg-red-400/80 dark:bg-red-300/70 border-2 border-red-200 text-red-700 shadow-md hover:bg-red-50 hover:text-red-700 hover:border-red-300 ${isEditing
               ? 'right-4 opacity-100 pointer-events-auto'
               : 'right-16 opacity-0 pointer-events-none'
             }`}
