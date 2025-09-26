@@ -47,18 +47,27 @@ const ProfileCard = ({ user }: { user: User }) => {
     <div className="max-w-lg">
       <Card className="overflow-hidden rounded-[2rem] relative">
         {/* Edit Button - Slides down when editing */}
-        <Button
-          variant="outline"
-          onClick={() => setIsEditing(true)}
-          className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${
-            isEditing
-              ? 'top-14 bg-muted border-muted-foreground/20 text-muted-foreground cursor-not-allowed'
-              : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
-            }`}
-          disabled={loading || isEditing}
-        >
-          <UserPen className="h-4 w-4" />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditing(true)}
+                className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${
+                  isEditing
+                    ? 'top-14 bg-muted border-muted-foreground/20 text-muted-foreground cursor-not-allowed'
+                    : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
+                  }`}
+                disabled={loading || isEditing}
+              >
+                <UserPen className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit Profile</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {/* Cancel Button - Slides right to take edit button's place */}
         <Button
