@@ -1,5 +1,5 @@
-import { Badge } from "./ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+import { Badge } from "../ui/badge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 export type AccountBadgeProps = {
   children: React.ReactNode
