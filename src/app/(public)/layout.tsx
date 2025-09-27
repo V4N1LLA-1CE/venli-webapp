@@ -1,5 +1,3 @@
-import { Pointer } from "@/components/ui/pointer";
-
 export default function PublicLayout({
   children,
 }: {
@@ -8,7 +6,8 @@ export default function PublicLayout({
   return (
     <div className="relative min-h-screen">
       {children}
-      <Pointer />
+      {/* custom pointer a bit clunky atm */}
+      {/* <Pointer /> */}
     </div>
   );
 }
