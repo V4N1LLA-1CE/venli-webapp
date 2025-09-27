@@ -111,7 +111,7 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
         </Button>
 
         {/* Banner Section */}
-        <div className="relative h-42 bg-jagged-ice-500 rounded-[1.7rem] m-1.5">
+        <div className="relative h-46 bg-jagged-ice-500 rounded-[1.7rem] m-1.5">
 
           {/* Avatar positioned half on banner, half below */}
           <Avatar className="absolute bottom-6 left-6 translate-y-1/2 h-24 w-24 border-4 border-background shadow-lg rounded-full">
