@@ -73,7 +73,7 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
   }
 
   return (
-    <div className="max-w-lg">
+    <div className="max-w-md">
       <Card className="overflow-hidden rounded-[2rem] relative">
         {/* Edit Button - Slides down when editing */}
         <TooltipProvider>
@@ -154,28 +154,28 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
                   </div>
 
                   {/* Account Type Badge - More prominent */}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <AccountBadge accountType={user.account_type}>
-                          {user.account_type?.toUpperCase() || "Not Set"}
-                        </AccountBadge>
-                      </TooltipTrigger>
-                      <TooltipContent className="w-[12rem] text-center">
-                        <p className="wrap-normal">
-                          {user.account_type
-                            ? "Account type helps personalise your experience"
-                            : "We recommend setting your account type to optimise user experience as our algorithm takes into account the type of user you are"
-                          }
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  {/* <TooltipProvider> */}
+                  {/*   <Tooltip> */}
+                  {/*     <TooltipTrigger asChild> */}
+                  {/*       <AccountBadge accountType={user.account_type}> */}
+                  {/*         {user.account_type?.toUpperCase() || "Not Set"} */}
+                  {/*       </AccountBadge> */}
+                  {/*     </TooltipTrigger> */}
+                  {/*     <TooltipContent className="w-[12rem] text-center"> */}
+                  {/*       <p className="wrap-normal"> */}
+                  {/*         {user.account_type */}
+                  {/*           ? "Account type helps personalise your experience" */}
+                  {/*           : "We recommend setting your account type to optimise user experience as our algorithm takes into account the type of user you are" */}
+                  {/*         } */}
+                  {/*       </p> */}
+                  {/*     </TooltipContent> */}
+                  {/*   </Tooltip> */}
+                  {/* </TooltipProvider> */}
                 </div>
 
                 {/* Professional Details Section */}
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Details</h3>
+                  <h3 className="text-sm font-extrabold text-muted-foreground uppercase tracking-wide">Details</h3>
 
                   <div className="flex items-center gap-6 text-sm">
                     <div className="flex items-center gap-2 min-w-0">
@@ -187,11 +187,11 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
 
                 {/* About Section */}
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Bio</h3>
+                  <h3 className="text-sm font-extrabold text-muted-foreground uppercase tracking-wide">Bio</h3>
                   <div className="relative">
                     <p
                       ref={bioRef}
-                      className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto break-words overflow-x-hidden`}
+                      className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap max-h-[200px] overflow-y-auto break-words overflow-x-hidden`}
                     >
                       {user.bio || "Bio is not set."}
                     </p>
