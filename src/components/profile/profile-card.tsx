@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Card, CardContent } from "../ui/card"
 import { Button } from "../ui/button"
 import { User } from "@/types"
-import { MapPin, UserPen, X } from "lucide-react"
+import { MapPin, UserPen, X, ChevronDown } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -27,12 +27,29 @@ const getInitials = (name: string) => {
 
 const ProfileCard = ({ user: initialUser }: { user: User }) => {
   const [isEditing, setIsEditing] = useState(false)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+  const bioRef = useRef<HTMLParagraphElement>(null)
   const dispatch = useDispatch()
   const { user: reduxUser, loading } = useSelector((state: RootState) => state.profile)
 
   // Always prefer initial prop during edit mode to prevent flickering,
   // otherwise use Redux user for updates
   const user = isEditing ? initialUser : (reduxUser || initialUser)
+
+  // Check if bio content is overflowing
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (bioRef.current) {
+        const isOverflowing = bioRef.current.scrollHeight > bioRef.current.clientHeight
+        setShowScrollIndicator(isOverflowing)
+      }
+    }
+
+    checkOverflow()
+    // Recheck when user changes (bio content might change)
+    const timeoutId = setTimeout(checkOverflow, 100)
+    return () => clearTimeout(timeoutId)
+  }, [user.bio])
 
   const handleSave = async (updatedData: Partial<User>) => {
     try {
@@ -66,8 +83,8 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
                 variant="outline"
                 onClick={() => setIsEditing(true)}
                 className={`absolute right-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out ${isEditing
-                    ? 'top-14 bg-muted/80 dark:bg-muted/60 border-2 border-muted-foreground/30 dark:border-muted-foreground/50 text-muted-foreground dark:text-muted-foreground/80 cursor-not-allowed shadow-sm'
-                    : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
+                  ? 'top-14 bg-muted/80 dark:bg-muted/60 border-2 border-muted-foreground/30 dark:border-muted-foreground/50 text-muted-foreground dark:text-muted-foreground/80 cursor-not-allowed shadow-sm'
+                  : 'top-4 bg-card border-2 border-border shadow-md hover:bg-accent hover:text-accent-foreground dark:hover:bg-jagged-ice-300'
                   }`}
                 disabled={loading || isEditing}
               >
@@ -85,8 +102,8 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
           variant="outline"
           onClick={handleCancel}
           className={`absolute top-4 h-8 w-8 p-0 z-10 rounded-lg hover:cursor-pointer transition-all duration-300 ease-in-out bg-card dark:hover:bg-red-400/80 dark:bg-red-300/70 border-2 border-red-200 text-red-700 shadow-md hover:bg-red-50 hover:text-red-700 hover:border-red-300 ${isEditing
-              ? 'right-4 opacity-100 pointer-events-auto'
-              : 'right-16 opacity-0 pointer-events-none'
+            ? 'right-4 opacity-100 pointer-events-auto'
+            : 'right-16 opacity-0 pointer-events-none'
             }`}
           disabled={loading}
         >
@@ -171,9 +188,20 @@ const ProfileCard = ({ user: initialUser }: { user: User }) => {
                 {/* About Section */}
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Bio</h3>
-                  <p className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap`}>
-                    {user.bio || "Bio is not set."}
-                  </p>
+                  <div className="relative">
+                    <p
+                      ref={bioRef}
+                      className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap max-h-[250px] overflow-y-auto break-words overflow-x-hidden`}
+                    >
+                      {user.bio || "Bio is not set."}
+                    </p>
+                    {showScrollIndicator && (
+                      <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs dark:bg-havelock-blue-700 bg-havelock-blue-300 dark:text-white text-primary-foreground px-2 py-1 shadow-sm rounded-xl">
+                        <ChevronDown className="h-3 w-3" />
+                        <span>Scroll for more</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

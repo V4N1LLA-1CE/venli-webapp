@@ -122,7 +122,7 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
               value={formData.bio}
               onChange={(e) => handleInputChange('bio', e.target.value)}
               placeholder="Tell us about yourself, your experience, and what you're looking for..."
-              className="rounded-lg resize-none min-h-[120px]"
+              className="rounded-lg resize-none min-h-[120px] max-h-[200px]"
               maxLength={1000}
             />
             <div className="text-xs text-muted-foreground text-right">
