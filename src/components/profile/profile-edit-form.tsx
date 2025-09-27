@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { User } from "@/types"
-import { Check, X, Loader2 } from "lucide-react"
+import { Check, X } from "lucide-react"
 
 interface ProfileEditFormProps {
   user: User
@@ -61,7 +60,7 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
             Personal Information
           </h3>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
               <Input
@@ -124,10 +123,10 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
               onChange={(e) => handleInputChange('bio', e.target.value)}
               placeholder="Tell us about yourself, your experience, and what you're looking for..."
               className="rounded-lg resize-none min-h-[120px]"
-              maxLength={255}
+              maxLength={1000}
             />
             <div className="text-xs text-muted-foreground text-right">
-              {formData.bio.length}/255 characters
+              {formData.bio.length}/1000 characters
             </div>
           </div>
         </div>
