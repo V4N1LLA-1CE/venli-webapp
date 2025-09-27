@@ -26,16 +26,13 @@ function AvatarImage({
   src,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
-  // Add cache-busting parameter to src if it exists
-  const cacheBustedSrc = src ? `${src}?t=${Date.now()}` : src
-
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
       className={cn("aspect-square size-full object-cover", className)}
       referrerPolicy="no-referrer"
       crossOrigin="anonymous"
-      src={cacheBustedSrc}
+      src={src}
       {...props}
     />
   )
